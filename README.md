@@ -24,8 +24,8 @@ The **Budget Tracker** is a Python-based web application designed to help users 
     python -m venv venv
     ```
     - Activate the virtual environment
-      - **Windows:** ```venv\Scripts\activate````
-      - **macOS/Linux:** ```source venv\Scripts\activate````
+      - **Windows:** ```venv\Scripts\activate```
+      - **macOS/Linux:** ```source venv\Scripts\activate```
 3. **Install Dependencies**:
     ```bash
     pip install -r requirements.txt
@@ -35,7 +35,7 @@ The **Budget Tracker** is a Python-based web application designed to help users 
     ```bash
     python main.py
     ```
-    - Open your browser and navigate to ```http://127.0.0.1:5000````
+    - Open your browser and navigate to ```http://127.0.0.1:5000```
 
 ## Usage
 - Features:
