@@ -83,3 +83,19 @@ def add_transaction():
 def transactions():
     transactions = Transaction.query.filter_by(user_id=session['user_id']).all()
     return render_template('transactions.html', transactions=transactions)
+
+@app.route('/delete_transaction/<int:transaction_id>', methods=['POST'])
+def delete_transaction(transaction_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    # Find the transaction by ID and ensure it belongs to the logged-in user
+    transaction = Transaction.query.filter_by(id=transaction_id, user_id=session['user_id']).first()
+    if transaction:
+        db.session.delete(transaction)
+        db.session.commit()
+        flash('Transaction deleted successfully!', 'success')
+    else:
+        flash('Transaction not found or not authorized to delete.', 'danger')
+
+    return redirect(url_for('transactions'))
