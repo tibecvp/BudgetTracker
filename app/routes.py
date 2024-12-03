@@ -99,3 +99,25 @@ def delete_transaction(transaction_id):
         flash('Transaction not found or not authorized to delete.', 'danger')
 
     return redirect(url_for('transactions'))
+
+@app.route('/edit_transaction/<int:transaction_id>',  methods=['GET', 'POST'])
+def edit_transaction(transaction_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    transaction = Transaction.query.filter_by(id=transaction_id, user_id=session['user_id']).first()
+    if not transaction:
+        flash('Transaction not found or not authorized to edit.', 'danger')
+        return redirect(url_for('transactions'))
+    
+    form = TransactionForm(obj=transaction) # Populate the form with existing data
+
+    if form.validate_on_submit():
+        transaction.description = form.description.data
+        transaction.amount = form.amount.data
+        transaction.type = form.type.data
+        db.session.commit()
+        flash('Transaction updated successfully!', 'success')
+        return redirect(url_for('transactions'))
+    
+    return render_template('edit_transaction.html', form=form, transaction=transaction)

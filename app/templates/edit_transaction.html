@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Edit Transaction</h2>
+<form method="POST" action="{{ url_for('edit_transaction', transaction_id=transaction.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        <label for="description">Description</label>
+        {{ form.description(class="form-control") }}
+    </div>
+    <div class="form-group">
+        <label for="amount">Amount</label>
+        {{ form.amount(class="form-control") }}
+    </div>
+    <div class="form-group">
+        <label for="type">Type</label>
+        {{ form.type(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-success">Update Transaction</button>
+    <a href="{{ url_for('transactions') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
