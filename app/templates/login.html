@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.username.label }} {{ form.username(size=20) }}<br>
-        {{ form.password.label }} {{ form.password(size=20) }}<br>
-        {{ form.submit() }}
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+   <h2>Login</h2>
+   <form method="POST" action="{{ url_for('login') }}">
+       {{ form.hidden_tag() }}
+       <div class="form-group">
+           <label for="username">Username</label>
+           {{ form.username(class="form-control", placeholder="Enter your username") }}
+       </div>
+       <div class="form-group">
+           <label for="password">Password</label>
+           {{ form.password(class="form-control", placeholder="Enter your password") }}
+       </div>
+       <button type="submit" class="btn btn-primary">Login</button>
+   </form>
+   <p class="mt-2">Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+{% endblock %}
