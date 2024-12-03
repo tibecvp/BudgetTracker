@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Dashboard</h2>
+
+<!-- Financial Summary -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Total Income</div>
+            <div class="card-body">
+                <h5 class="card-title">${{ total_income }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-header">Total Expenses</div>
+            <div class="card-body">
+                <h5 class="card-title">${{ total_expenses }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Balance</div>
+            <div class="card-body">
+                <h5 class="card-title">${{ balance }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Transactions -->
+<h3>Recent Transactions</h3>
+{% if recent_transactions %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in recent_transactions %}
+        <tr>
+            <td>{{ transaction.description }}</td>
+            <td>${{ transaction.amount }}</td>
+            <td>{{ transaction.type }}</td>
+            <td>{{ transaction.date.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No recent transactions found.</p>
+{% endif %}
+<a href="{{ url_for('transactions') }}" class="btn btn-secondary mt-3">View All Transactions</a>
+<a href="{{ url_for('add_transaction') }}" class="btn btn-primary mt-3 ml-3">New Transaction</a>
+{% endblock %}

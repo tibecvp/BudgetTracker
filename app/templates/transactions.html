@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{{ url_for('dashboard') }}" class="btn btn-link mb-3">← Back to Dashboard</a>
+
+<h2>Your Transactions</h2>
+
+<!-- Check if there are any transactions -->
+{% if transactions %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.description }}</td>
+                <td>${{ transaction.amount }}</td>
+                <td>{{ transaction.type }}</td>
+                <td>{{ transaction.date.strftime('%Y-%m-%d') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <!-- Message for users with no transactions -->
+    <div class="alert alert-info" role="alert">
+        You have no transactions yet. <a href="{{ url_for('add_transaction') }}" class="alert-link">Click here</a> to add your first transaction!
+    </div>
+{% endif %}
+{% endblock %}
