@@ -1,7 +1,8 @@
-from flask import render_template, redirect, url_for, flash, session
+from flask import render_template, redirect, url_for, flash, session, Response
 from app import app, db
 from app.models import User, Transaction
-from app.forms import RegistrationForm, LoginForm, TransactionForm
+from app.forms import RegistrationForm, LoginForm, TransactionForm, FilterForm
+import csv
 
 # @app.route('/')
 # def home():
@@ -79,10 +80,30 @@ def add_transaction():
         return redirect(url_for('dashboard'))
     return render_template('add_transaction.html', form=form)
 
-@app.route('/transactions')
+@app.route('/transactions', methods=['GET', 'POST'])
 def transactions():
-    transactions = Transaction.query.filter_by(user_id=session['user_id']).all()
-    return render_template('transactions.html', transactions=transactions)
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    form = FilterForm()
+    query = Transaction.query.filter_by(user_id=session['user_id'])
+
+    # Apply filters if the form is submitted
+    if form.validate_on_submit():
+        # Filter by start date
+        if form.start_date.data:
+            query = query.filter(Transaction.date >= form.start_date.data)
+        # Filter by end date
+        if form.end_date.data:
+            query = query.filter(Transaction.date <= form.end_date.data)
+        # Filter by transaction type
+        if form.transaction_type.data:
+            query = query.filter(Transaction.type == form.transaction_type.data)
+    
+    # Fetch the filtered transactions
+    transactions = query.order_by(Transaction.date.desc()).all()
+
+    return render_template('transactions.html', transactions=transactions, form=form)
 
 @app.route('/delete_transaction/<int:transaction_id>', methods=['POST'])
 def delete_transaction(transaction_id):
@@ -121,3 +142,31 @@ def edit_transaction(transaction_id):
         return redirect(url_for('transactions'))
     
     return render_template('edit_transaction.html', form=form, transaction=transaction)
+
+@app.route('/report')
+def report():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    # Retrieve transactions for the logged-in user
+    transactions = Transaction.query.filter_by(user_id=session['user_id']).all()
+    total_income = sum(t.amount for t in transactions if t.type == 'income')
+    total_expenses = sum(t.amount for t in transactions if t.type == 'expense')
+    balance = total_income - total_expenses
+
+    return render_template('report.html', total_income=total_income, total_expenses=total_expenses, balance=balance)
+
+@app.route('/export_transactions')
+def export_transactions():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    transactions = Transaction.query.filter_by(user_id=session['user_id']).all()
+
+    # Create a CSV response
+    def generate_csv():
+        yield 'Description,Amount,Type,Date\n'
+        for t in transactions:
+            yield f'{t.description},{t.amount},{t.type},{t.date}\n'
+
+    return Response(generate_csv(), mimetype='text/csv', headers={'Content-Disposition': 'attachment;filename=transactions.csv'})
