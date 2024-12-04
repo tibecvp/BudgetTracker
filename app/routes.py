@@ -4,9 +4,9 @@ from app.models import User, Transaction
 from app.forms import RegistrationForm, LoginForm, TransactionForm, FilterForm
 import csv
 
-# @app.route('/')
-# def home():
-#     return redirect(url_for('login'))
+@app.route('/')
+def home():
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
