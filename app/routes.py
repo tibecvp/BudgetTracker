@@ -41,6 +41,12 @@ def logout():
 
 @app.route('/dashboard')
 def dashboard():
+    """
+    Displays the user dashboard with financial summary and recent transactions.
+
+    Returns:
+        Response: Renders the dashboard template.
+    """
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
@@ -107,6 +113,15 @@ def transactions():
 
 @app.route('/delete_transaction/<int:transaction_id>', methods=['POST'])
 def delete_transaction(transaction_id):
+    """
+    Deletes a transaction for the logged-in user.
+
+    Args:
+        transaction_id (int): The ID of the transaction to delete.
+
+    Returns:
+        Response: Redirects to the transactions page after deletion.
+    """
     if 'user_id' not in session:
         return redirect(url_for('login'))
     

@@ -14,6 +14,15 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class TransactionForm(FlaskForm):
+    """
+    A form for adding or editing financial transactions.
+
+    Attributes:
+        description (StringField): The description of the transaction.
+        amount (FloatField): The monetary amount of the transaction.
+        type (SelectField): The type of transaction ('income' or 'expense').
+        submit (SubmitField): The submit button for the form.
+    """
     description = StringField('Description', validators=[DataRequired()])
     amount = FloatField('Amount', validators=[DataRequired()])
     type = SelectField('Type', choices=[('income', 'Income'), ('expense', 'Expense')], validators=[DataRequired()])
