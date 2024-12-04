@@ -149,12 +149,33 @@ def report():
         return redirect(url_for('login'))
     
     # Retrieve transactions for the logged-in user
-    transactions = Transaction.query.filter_by(user_id=session['user_id']).all()
+    transactions = Transaction.query.filter_by(user_id=session['user_id']).order_by(Transaction.date).all()
     total_income = sum(t.amount for t in transactions if t.type == 'income')
     total_expenses = sum(t.amount for t in transactions if t.type == 'expense')
     balance = total_income - total_expenses
 
-    return render_template('report.html', total_income=total_income, total_expenses=total_expenses, balance=balance)
+    # Prepare data for the chart
+    pie_chart_data = {
+        'labels': ['Income', 'Expenses'],
+        'values': [total_income, total_expenses]
+    }
+
+    # Prepare data for the line chart (Balance Over Time)
+    dates = []
+    balances = []
+    current_balance = 0
+
+    for transaction in transactions:
+        current_balance += transaction.amount if transaction.type == 'income' else -transaction.amount
+        dates.append(transaction.date.strftime('%Y-%m-%d'))
+        balances.append(current_balance)
+
+    line_chart_data = {
+        'labels': dates,  # Dates
+        'values': balances  # Balances
+    }
+
+    return render_template('report.html', pie_chart_data=pie_chart_data, line_chart_data=line_chart_data, total_income=total_income, total_expenses=total_expenses, balance=current_balance)
 
 @app.route('/export_transactions')
 def export_transactions():
