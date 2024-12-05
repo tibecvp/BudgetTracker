@@ -15,6 +15,22 @@ The **Budget Tracker** is a Python-based web application designed to help users 
   - Balance Over Time Line Chart
 - Responsive design with Bootstrap
 
+## Screenshots
+
+Here are screenshots showcasing key features of the Budget Tracker application:
+
+### Dashboard
+The dashboard provides a quick overview of your financial data, including total income, total expenses, and a balance summary. It also displays recent transactions and navigation to other features.
+![Dashboard Screenshot](./screenshots/dashboard.jpeg)
+
+### Transactions
+The transactions page displays all user transactions in a table format. Users can add, edit, delete, and filter transactions by date range or type.
+![Transactions Screenshot](./screenshots/transactions.jpeg)
+
+### Financial Report
+The financial report visualizes data using a pie chart (Income vs. Expenses) and a line chart (Balance Over Time), providing insights into the user's financial performance.
+![Report Screenshot](./screenshots/report.jpeg)
+
 ## Technologies Used
 - **Python 3.9.6**
 - **Flask** (Backend Web Framework)
