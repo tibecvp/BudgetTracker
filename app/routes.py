@@ -6,10 +6,22 @@ import csv
 
 @app.route('/')
 def home():
+    """
+    Redirects the user to the login page.
+
+    Returns:
+        Response: A redirection response to the login page.
+    """
     return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    """
+    Handles user registration.
+
+    Returns:
+        Response: Renders the registration page or redirects to the login page on success.
+    """
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data)
@@ -22,6 +34,12 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Handles user login.
+
+    Returns:
+        Response: Renders the login page or redirects to the dashboard on success.
+    """
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -35,6 +53,12 @@ def login():
 
 @app.route('/logout')
 def logout():
+    """
+    Logs out the current user.
+
+    Returns:
+        Response: Redirects to the login page.
+    """
     session.pop('user_id', None) # Remove the user_id from the session
     flash('Logged out successfully!', 'success') # Show a success message
     return redirect(url_for('login')) # Redirect to the login page
@@ -63,15 +87,14 @@ def dashboard():
 
     return render_template('dashboard.html', total_income=total_income, total_expenses=total_expenses, balance=balance, recent_transactions=recent_transactions)
 
-# Route to check the user is logged in
-@app.route('/check_session')
-def check_session():
-    if 'user_id' in session:
-        return f"Logged in as user {session['user_id']}"
-    return "No user logged in"
-
 @app.route('/add_transaction', methods=['GET', 'POST'])
 def add_transaction():
+    """
+    Adds a new transaction for the logged-in user.
+
+    Returns:
+        Response: Renders the add transaction page or redirects to the dashboard.
+    """
     form = TransactionForm()
     if form.validate_on_submit():
         transaction = Transaction(
@@ -88,6 +111,15 @@ def add_transaction():
 
 @app.route('/transactions', methods=['GET', 'POST'])
 def transactions():
+    """
+    Deletes a transaction for the logged-in user.
+
+    Args:
+        transaction_id (int): The ID of the transaction to delete.
+
+    Returns:
+        Response: Redirects to the transactions page.
+    """
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
@@ -138,6 +170,15 @@ def delete_transaction(transaction_id):
 
 @app.route('/edit_transaction/<int:transaction_id>',  methods=['GET', 'POST'])
 def edit_transaction(transaction_id):
+    """
+    Edits an existing transaction for the logged-in user.
+
+    Args:
+        transaction_id (int): The ID of the transaction to edit.
+
+    Returns:
+        Response: Renders the edit transaction page or redirects to the transactions page.
+    """
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
@@ -160,6 +201,12 @@ def edit_transaction(transaction_id):
 
 @app.route('/report')
 def report():
+    """
+    Displays the financial report with visual charts.
+
+    Returns:
+        Response: Renders the report page with charts.
+    """
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
@@ -194,6 +241,15 @@ def report():
 
 @app.route('/export_transactions')
 def export_transactions():
+    """
+    Exports the user's transactions as a CSV file.
+
+    If the user is not logged in, they are redirected to the login page.
+
+    Returns:
+        Response: A downloadable CSV file containing the user's transactions,
+        with columns for description, amount, type, and date.
+    """
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
