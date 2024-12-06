@@ -93,22 +93,22 @@ This will create the necessary tables, including User and Transaction, in the SQ
 
 ## Application Usage
 1. **Register**
-Navigate to http://127.0.0.1:5000/register to create a new user account.
+  Navigate to http://127.0.0.1:5000/register to create a new user account.
 2. **Login**
-Log in at http://127.0.0.1:5000/login with your credentials.
+  Log in at http://127.0.0.1:5000/login with your credentials.
 3. **Dashboard**
-After logging in, you’ll be redirected to the dashboard where you can:
-- View a financial summary
-- Add a transaction
-- View and manage all transactions
+  After logging in, you’ll be redirected to the dashboard where you can:
+  - View a financial summary
+  - Add a transaction
+  - View and manage all transactions
 4. **Add a Transaction**
-Go to http://127.0.0.1:5000/add_transaction to add income or expense transactions.
+  Go to http://127.0.0.1:5000/add_transaction to add income or expense transactions.
 5. **View and Manage Transactions**
-Visit http://127.0.0.1:5000/transactions to view, edit, delete, or filter transactions.
+  Visit http://127.0.0.1:5000/transactions to view, edit, delete, or filter transactions.
 6. **View Reports**
-Access the financial report at http://127.0.0.1:5000/report to:
-- View a pie chart of Income vs. Expenses.
-- View a line chart of Balance Over Time.
+  Access the financial report at http://127.0.0.1:5000/report to:
+  - View a pie chart of Income vs. Expenses.
+  - View a line chart of Balance Over Time.
 
 ---
 
