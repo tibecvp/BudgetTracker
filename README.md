@@ -70,19 +70,20 @@ Before setting up the project, ensure you have the following installed:
     pip install -r requirements.txt
     ````
 4. **Set Up the Database**  
-**Initialize the Database**  
-To set up the database, open the Flask shell:
+    **Initialize the Database**  
+    To set up the database, open the Flask shell:
     ```bash
     flask shell
     ````  
-Run the following commands to create the tables:
+    Run the following commands to create the tables:
     ```bash
     from app import db
     db.create_all()
     exit()
     ````
-This will create the necessary tables, including User and Transaction, in the SQLite database (budget_tracker.db).
-4. **Run the Application**:
+
+    This will create the necessary tables, including User and Transaction, in the SQLite database (budget_tracker.db).
+5. **Run the Application**:
     - Start the Flask development server:
     ```bash
     python main.py
